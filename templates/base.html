@@ -2,9 +2,23 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{{title}} - Todo App</title>
+    <title>Todo App - {{title}}</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.css') }}">
+
+    <script src="{{ url_for('static', filename='htmx.js') }}"></script>
+    <script src="{{ url_for('static', filename='alpinejs.js') }}" defer></script>
 </head>
 <body>
-    {% block content %}{% endblock %}
+
+    <div class="container-fluid mt-3">
+        <h1 class="text-center">Todo App</h1>
+
+        <div class="container py-4">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='bootstrap.bundle.js') }}"></script>
 </body>
 </html>
