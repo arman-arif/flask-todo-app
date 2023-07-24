@@ -1,4 +1,5 @@
 from flask_migrate import Migrate
+
 from app.routes.web import Route
 from app.app import app
 from app.db import db

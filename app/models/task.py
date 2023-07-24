@@ -1,5 +1,6 @@
-from app.db import db
 from datetime import datetime
+
+from app.db import db
 
 
 class Task(db.Model):
@@ -9,11 +10,13 @@ class Task(db.Model):
     done = db.Column(db.Boolean, default=False)
     date_created = db.Column(db.DateTime, default=datetime.utcnow())
 
-    def __str__(self):
-        return self.title
-
     def __repr__(self):
         return '<Task %r>' % self.id
 
-    # def create(self, item):
-    #     db.session.add(item)
+    @staticmethod
+    def create(values: dict):
+        new_task = Task(title=values['title'], description=values['description'])
+        db.session.add(new_task)
+        db.session.commit()
+
+        return new_task
