@@ -1,14 +1,10 @@
-from flask import Flask, render_template
-from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from app.config import Config
+from app.routes.web import Route
+from app.app import app
+from app.db import db
 
-app = Flask(__name__)
-app.config.from_object(Config)
-db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
+blueprint = Route.blueprint()
 
-@app.route('/')
-def index():
-    return render_template('index.html', title="Home")
+app.register_blueprint(blueprint, url_prefix='/')
