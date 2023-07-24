@@ -7,26 +7,33 @@ from app.models import Task
 class TaskController:
     @staticmethod
     def index():
-        tasks = Task.query.all()
+        tasks = Task.get_list()
         return render_template('index.html', title='Home', tasks=tasks)
+
+    @staticmethod
+    def list():
+        tasks = Task.get_list()
+        return render_template('list.html', tasks=tasks)
 
     @staticmethod
     def add():
         title = request.form.get('title')
         description = request.form.get('description')
-        task = Task.create({
-            "title": title,
-            "description": description
-        })
+        if (title is not None) and (title != ''):
+            task = Task.create({
+                "title": title,
+                "description": description
+            })
+
+            return make_response({
+                "success": True,
+                "data": task.to_dict(),
+                "message": "Task created successfully."
+            })
 
         return make_response({
-            "success": True,
-            "data": {
-                "id": task.id,
-                "title": task.title,
-                "description": task.description,
-                "date_created": task.date_created,
-            }
+            'success': False,
+            'message': "Invalid task data."
         })
 
     @staticmethod
@@ -44,3 +51,8 @@ class TaskController:
         if task:
             db.session.delete(task)
             db.session.commit()
+
+        return make_response({
+            "success": True,
+            "message": "Task deleted successfully."
+        })
