@@ -4,15 +4,18 @@
 
 <div class="row justify-content-center">
     <div class="col-md-8 col-xl-6">
-        <form action="/add-task" method="post" class="mb-4 position-relative" hx-post="/add-task" hx-swap="none" hx-indicator="#submit-button">
+        <form action="/add-task" method="post" class="mb-4 position-relative" hx-post="/add-task" hx-swap="none" hx-indicator="#submit-button" x-data="{title:'', description: '', submit: false}" x-ref="task_form">
             <div class="form-group">
-                <input type="text" name="title" id="task" placeholder="What to do today?" class="form-control rounded-bottom-0">
-                <textarea name="description" id="description" rows="3" class="form-control pe-5 rounded-top-0 border-top-0" placeholder="Write down the task description..."></textarea>
-                <button class="btn btn-dark position-absolute bottom-0 end-0 me-2 mb-2 py-1 rounded-pill" id="submit-button">Add Task</button>
+                <input type="text" name="title" id="task" placeholder="What to do today?" class="form-control rounded-bottom-0" x-model="title" x-bind:class="{'is-invalid': submit && title==''}">
+                <textarea name="description" id="description" rows="3" class="form-control pe-5 rounded-top-0 border-top-0" placeholder="Write down the task description..." x-model="description"  x-bind:class="{'is-invalid': submit && description==''}"></textarea>
+                <button class="btn btn-dark position-absolute bottom-0 end-0 me-2 mb-2 py-1 rounded-pill" id="submit-button" x-on:click="submit=true;">Add Task</button>
             </div>
         </form>
 
-        <div class="list-group" task-list="#task-list">
+        <div class="list-group" id="task-list"
+            hx-get="/task-list"
+            hx-swap="innerHTML"
+        >
             {% for task in tasks %}
             <div class="list-group-item d-flex justify-content-between align-items-start" id="task-{{task.id}}">
                 <div class="ms-2 me-auto">
