@@ -4,7 +4,29 @@
 
 <div class="row justify-content-center">
     <div class="col-md-8 col-xl-6">
-        <form action="/add-task" method="post" class="mb-4 position-relative" hx-post="/add-task" hx-swap="none" hx-indicator="#submit-button" x-data="{title:'', description: '', submit: false}" x-ref="task_form">
+        <form 
+            action="/add-task"
+            method="post"
+            class="mb-4 position-relative"
+            hx-post="/add-task"
+            hx-swap="none"
+            hx-indicator="#submit-button"
+            hx-trigger="submit"
+            hx-on::after-request="this.reset()"
+            @htmx:after-on-load="$dispatch('task-added', $event);"
+            @reset="resetForm"
+            x-data="{
+                title:'', 
+                description: '', 
+                submit: false,
+                resetForm() {
+                    this.submit = false;
+                    this.title = '';
+                    this.description = '';
+                }
+            }" 
+            x-ref="task_form"
+        >
             <div class="form-group">
                 <input type="text" name="title" id="task" placeholder="What to do today?" class="form-control rounded-bottom-0" x-model="title" x-bind:class="{'is-invalid': submit && title==''}">
                 <textarea name="description" id="description" rows="3" class="form-control pe-5 rounded-top-0 border-top-0" placeholder="Write down the task description..." x-model="description"  x-bind:class="{'is-invalid': submit && description==''}"></textarea>
@@ -14,6 +36,7 @@
 
         <div class="list-group" id="task-list"
             hx-get="/task-list"
+            hx-trigger="task-added from:body"
             hx-swap="innerHTML"
         >
             {% for task in tasks %}
