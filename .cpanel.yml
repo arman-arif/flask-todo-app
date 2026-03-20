@@ -1,5 +1,6 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/$USER/wwwroot/flask-todo-app/
+    - export CPANEL_USER=$(whoami)
+    - export DEPLOYPATH=/home/$CPANEL_USER/wwwroot/flask-todo-app/
     - /bin/cp -R * $DEPLOYPATH
