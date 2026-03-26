@@ -43,6 +43,15 @@ class TaskController:
         if task:
             task.done = not task.done
             db.session.commit()
+            return make_response({
+                "success": True,
+                "message": "Task updated successfully."
+            })
+
+        return make_response({
+            "success": False,
+            "message": "Task not found."
+        })
 
     @staticmethod
     def delete(task_id):
@@ -51,8 +60,12 @@ class TaskController:
         if task:
             db.session.delete(task)
             db.session.commit()
+            return make_response({
+                "success": True,
+                "message": "Task deleted successfully."
+            })
 
         return make_response({
-            "success": True,
-            "message": "Task deleted successfully."
+            "success": False,
+            "message": "Task not found."
         })

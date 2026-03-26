@@ -1,3 +1,1 @@
-import app.models.task
-
-Task = task.Task
+from app.models.task import Task

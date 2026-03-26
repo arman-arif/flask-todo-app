@@ -1,5 +1,5 @@
 from datetime import datetime
-from sqlalchemy import desc;
+from sqlalchemy import desc
 from app.db import db
 
 
@@ -8,7 +8,7 @@ class Task(db.Model):
     title = db.Column(db.String(255), nullable=False)
     description = db.Column(db.Text, nullable=True)
     done = db.Column(db.Boolean, default=False)
-    date_created = db.Column(db.DateTime, default=datetime.utcnow())
+    date_created = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __repr__(self):
         return '<Task %r>' % self.id
@@ -19,6 +19,7 @@ class Task(db.Model):
             "title": self.title,
             "description": self.description,
             "date_created": self.date_created,
+            "done": self.done,
         }
 
     @staticmethod
